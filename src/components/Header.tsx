@@ -13,6 +13,7 @@ const Header: FC = () => {
   const logoutHandler = () => {
     dispatch(logout());
     navigate("/auth");
+    localStorage.removeItem("token")
   };
   return (
     <header className="flex items-center justify-between bg-slate-800 p-4 shadow-sm backdrop-blur-sm">

@@ -29,3 +29,7 @@ export interface ICategory {
   updatedAt: string | undefined;
   transactions: [];
 }
+
+export interface IResponseTransationLoader {
+  categories: ICategory[];
+}
