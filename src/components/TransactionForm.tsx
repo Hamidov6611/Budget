@@ -1,8 +1,12 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { Form } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
+import { IResponseTransationLoader } from "../types/types";
+import { CategoryModal } from ".";
 
 const TransactionForm: FC = () => {
+  const { categories } = useLoaderData() as IResponseTransationLoader;
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
   return (
     <div className="rounded-md bg-slate-800 p-4 mb-4">
       <Form method="post" action="/transactions" className="grid gap-2">
@@ -28,17 +32,24 @@ const TransactionForm: FC = () => {
         </label>
 
         {/* Select */}
-        <label htmlFor="category" className="grid">
-          <span>Category</span>
-          <select name="category" required className="input border-slate-700">
-            <option value="1">Salary</option>
-            <option value="2">Gift</option>
-            <option value="3">Grocery</option>
-          </select>
-        </label>
+        {categories?.length ? (
+          <label htmlFor="category" className="grid">
+            <span>Category</span>
+            <select name="category" required className="input border-slate-700">
+              {categories?.map((ctg, idx) => (
+                <option key={idx} value={ctg.id}>
+                  {ctg.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : (
+          <h1 className=" text-red-300">To continue create a category first</h1>
+        )}
 
         <button
-          onClick={() => {}}
+          type="button"
+          onClick={() => setVisibleModal(true)}
           className="mt-2 flex max-w-fit items-center gap-2 text-white/50 hover:text-white"
         >
           <FaPlus />
@@ -70,6 +81,10 @@ const TransactionForm: FC = () => {
         {/* Submit Buttons */}
         <button className="btn btn-green mt-2 max-w-fit">Submit</button>
       </Form>
+
+      {visibleModal && (
+        <CategoryModal type="post" setVisibleModal={setVisibleModal} />
+      )}
     </div>
   );
 };

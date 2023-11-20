@@ -22,14 +22,25 @@ export interface IUser {
   token: string;
 }
 
+export interface ITransaction {
+  amount: number;
+  createdAt: string;
+  updatedAt: string | undefined;
+  title: string;
+  type: string;
+  id: number;
+  category: ICategory
+}
+
 export interface ICategory {
   title: string;
   id: number;
   createdAt: string | undefined;
   updatedAt: string | undefined;
-  transactions: [];
+  transactions?: [];
 }
 
 export interface IResponseTransationLoader {
   categories: ICategory[];
+  transactions: ITransaction[]
 }
