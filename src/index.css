@@ -23,6 +23,9 @@
   .input {
     @apply border dark:bg-slate-800 border-slate-800 bg-slate-700 bg-transparent p-2 placeholder:text-white rounded-md outline-none placeholder:text-sm focus:border-slate-300;
   }
+  .input2 {
+    @apply border px-4 dark:bg-slate-800 h-[40px] border-slate-800 bg-slate-700 bg-transparent min-w-[120px]  placeholder:text-white rounded-md outline-none placeholder:text-[12px] focus:border-slate-300;
+  }
   .container {
     @apply max-w-[1000px];
   }

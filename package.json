@@ -10,6 +10,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
+    "@alan-ai/alan-sdk-web": "^1.8.54",
     "@reduxjs/toolkit": "^1.9.7",
     "axios": "^1.6.0",
     "localforage": "^1.10.0",

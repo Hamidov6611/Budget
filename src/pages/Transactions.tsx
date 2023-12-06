@@ -1,17 +1,27 @@
 import { FC } from "react";
 import TransactionForm from "../components/TransactionForm";
 import { instance } from "../api/axios.api";
-import { ICategory, IResponseTransationLoader } from "../types/types";
+import {
+  ICategory,
+  IResponseTransationLoader,
+  ITransaction,
+} from "../types/types";
 import { useLoaderData } from "react-router-dom";
 import { toast } from "react-toastify";
 import { TransactionsTable } from "../components";
+import { formatToUSD } from "../helpers/currency.helper";
+import Chart from "../components/Chart";
 
 export const transactionLoader = async () => {
   const categories = await instance.get<ICategory[]>("/categories");
-  const transactions = await instance.get('/transactions')
+  const transactions = await instance.get<ITransaction[]>("/transactions");
+  const totalIncome = await instance.get<number>("/transactions/income/find");
+  const totalExpense = await instance.get<number>("/transactions/expense/find");
   const data = {
     categories: categories.data,
-    transactions: transactions.data
+    transactions: transactions.data,
+    totalIncome: totalIncome.data,
+    totalExpense: totalExpense.data,
   };
   return data;
 };
@@ -33,16 +43,17 @@ export const transactionAction = async ({ request }: any) => {
     }
     case "DELETE": {
       const formData = await request.formData();
-      const transactionId = formData.get('id')
-      await instance.delete(`/transactions/transaction/${transactionId}`)
-      toast.success("Transaction deleted.")
-      return null
+      const transactionId = formData.get("id");
+      await instance.delete(`/transactions/transaction/${transactionId}`);
+      toast.success("Transaction deleted.");
+      return null;
     }
   }
 };
 
 const Transactions: FC = () => {
-  const { categories } = useLoaderData() as IResponseTransationLoader;
+  const { totalIncome, totalExpense } =
+    useLoaderData() as IResponseTransationLoader;
   return (
     <>
       <div className="grid grid-cols-3 gap-4 mt-4 items-start">
@@ -58,16 +69,22 @@ const Transactions: FC = () => {
               <p className="uppercase text-base text-center font-bold">
                 Total income
               </p>
-              <p className="mt-2 bg-green-600 p-1 text-center">1000$</p>
+              <p className="mt-2 bg-green-600 p-1 text-center">
+                {formatToUSD.format(totalIncome)}
+              </p>
             </div>
             <div>
               <p className="uppercase text-base text-center font-bold">
                 Total Expense
               </p>
-              <p className="mt-2 bg-red-600 p-1 text-center">1000$</p>
+              <p className="mt-2 bg-red-600 p-1 text-center">
+                {formatToUSD.format(totalExpense)}
+              </p>
             </div>
           </div>
-          <div>Chart</div>
+          <>
+            <Chart totalExpense={totalExpense} totalIncome={totalIncome} />
+          </>
         </div>
       </div>
 

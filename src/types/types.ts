@@ -29,7 +29,7 @@ export interface ITransaction {
   title: string;
   type: string;
   id: number;
-  category: ICategory
+  category: ICategory;
 }
 
 export interface ICategory {
@@ -42,5 +42,7 @@ export interface ICategory {
 
 export interface IResponseTransationLoader {
   categories: ICategory[];
-  transactions: ITransaction[]
+  transactions: ITransaction[];
+  totalIncome: number;
+  totalExpense: number;
 }
