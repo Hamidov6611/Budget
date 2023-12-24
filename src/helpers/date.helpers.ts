@@ -7,4 +7,5 @@ export const formatData = (dateString: string): string => {
   };
 
   return date.toLocaleDateString("en-US", options);
+  // edit option type
 };
